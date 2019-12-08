@@ -42,7 +42,7 @@ def home():
         currency_to = DEFAULTS['currency_to']
     rate, currencies = get_currency(currency_from, currency_to)
 
-    return render_template('index.html', articles=articles, weather=weather, rate=rate, currency_from=currency_from,
+    return render_template('index.html', publication=publication,articles=articles, weather=weather, rate=rate, currency_from=currency_from,
                            currency_to=currency_to, currencies=sorted(currencies))
 
 
