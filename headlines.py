@@ -13,10 +13,12 @@ RSS_FEED = {'bbc': 'http://feeds.bbci.co.uk/news/rss.xml',
             'fox': 'http://feeds.foxnews.com/foxnews/latest',
             'iol': "http://rss.iol.io/iol/news",
             }
-WEATHER_API = 'e0ee0f93ee5a7ecdfec640ca18e2bf0a'
+WEATHER_API = '851ae73a2d9696486aadf1ecb23e1f67'
 DEFAULTS = {
     'publication': 'bbc',
-    'city': 'London, UK'
+    'city': 'London, UK',
+    'currency_from': 'GBP',
+    'currency_to': 'USD'
 }
 
 
@@ -32,7 +34,16 @@ def home():
         city = DEFAULTS['city']
     weather = get_weather(city)
 
-    return render_template('index.html', articles=articles, weather=weather)
+    currency_from = request.args.get('currency_from')
+    if not currency_from:
+        currency_from = DEFAULTS['currency_from']
+    currency_to = request.args.get('currency_to')
+    if not currency_to:
+        currency_to = DEFAULTS['currency_to']
+    rate, currencies = get_currency(currency_from, currency_to)
+
+    return render_template('index.html', articles=articles, weather=weather, rate=rate, currency_from=currency_from,
+                           currency_to=currency_to, currencies=sorted(currencies))
 
 
 def get_news(query):
@@ -59,6 +70,15 @@ def get_weather(query):
             'country': parsed['sys']['country']
         }
     return weather
+
+
+def get_currency(frm, to):
+    currency_url = 'https://api.exchangeratesapi.io/latest'
+    all_currency = urllib.request.urlopen(currency_url).read()
+    parsed = json.loads(all_currency).get('rates')
+    frm_rate = parsed.get(frm.upper())
+    to_rate = parsed.get(to.upper())
+    return (to_rate / frm_rate, parsed.keys())
 
 
 if __name__ == '__main__':
