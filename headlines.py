@@ -5,6 +5,8 @@ from flask import request
 import json
 import urllib3
 import urllib
+import datetime
+from flask import make_response
 
 app = Flask(__name__)
 
@@ -26,24 +28,33 @@ DEFAULTS = {
 def home():
     publication = request.args.get('publication')
     if not publication:
-        publication = DEFAULTS['publication']
+        publication = request.cookies.get("publication") or DEFAULTS['publication']
     articles = get_news(publication)
 
     city = request.args.get('city')
     if not city:
-        city = DEFAULTS['city']
+        city = request.cookies.get("city") or  DEFAULTS['city']
     weather = get_weather(city)
 
     currency_from = request.args.get('currency_from')
     if not currency_from:
-        currency_from = DEFAULTS['currency_from']
+        currency_from = request.cookies.get("currency_from") or  DEFAULTS['currency_from']
     currency_to = request.args.get('currency_to')
     if not currency_to:
-        currency_to = DEFAULTS['currency_to']
+        currency_to = request.cookies.get("currency_to") or DEFAULTS['currency_to']
     rate, currencies = get_currency(currency_from, currency_to)
 
-    return render_template('index.html', publication=publication,articles=articles, weather=weather, rate=rate, currency_from=currency_from,
-                           currency_to=currency_to, currencies=sorted(currencies))
+    response = make_response(
+        render_template('index.html', publication=publication, articles=articles, weather=weather, rate=rate,
+                        currency_from=currency_from,
+                        currency_to=currency_to, currencies=sorted(currencies)))
+    expires = datetime.datetime.now() + datetime.timedelta(days=365)
+    response.set_cookie("publication", publication, expires=expires)
+    response.set_cookie("city", city, expires=expires)
+    response.set_cookie("currency_from", currency_from, expires=expires)
+    response.set_cookie("currency_to", currency_to, expires=expires)
+
+    return response
 
 
 def get_news(query):
