@@ -19,10 +19,9 @@ WEATHER_API = '851ae73a2d9696486aadf1ecb23e1f67'
 DEFAULTS = {
     'publication': 'bbc',
     'city': 'London, UK',
-    'currency_from': 'GBP',
-    'currency_to': 'USD'
+    'currency_from': 'GBP', x
+        'currency_to': 'USD'
 }
-
 
 @app.route('/')
 def home():
@@ -33,12 +32,12 @@ def home():
 
     city = request.args.get('city')
     if not city:
-        city = request.cookies.get("city") or  DEFAULTS['city']
+        city = request.cookies.get("city") or DEFAULTS['city']
     weather = get_weather(city)
 
     currency_from = request.args.get('currency_from')
     if not currency_from:
-        currency_from = request.cookies.get("currency_from") or  DEFAULTS['currency_from']
+        currency_from = request.cookies.get("currency_from") or DEFAULTS['currency_from']
     currency_to = request.args.get('currency_to')
     if not currency_to:
         currency_to = request.cookies.get("currency_to") or DEFAULTS['currency_to']

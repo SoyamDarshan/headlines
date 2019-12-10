@@ -1,123 +1,124 @@
 <html>
 <head>
     <title>Headlines</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col"><h2>Current Weather</h2>
-        
-        <form class="form-group">
-        <div class="row">
-            <div class="col-6">
-            <input type="text" class="form-control" name="city" placeholder="weather search" />
-            </div>
-            <div class="col-6">
-            <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden /></button>            
-            </div>
-        </div>
-        </form>
-        <div class="row">
-            <div class="col">
-            <p>City: <b>{{weather.city}}, {{ weather.country}}</b></p>
-            </div>
-            <div class="col">
-            <p>{{weather.description}} | {{ weather.temperature }}&#8451 </b></p>
 
+            <form class="form-group">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control" name="city" placeholder="weather search"/>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden/></button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col">
+                    <p>City: <b>{{weather.city}}, {{ weather.country}}</b></p>
+                </div>
+                <div class="col">
+                    <p>{{weather.description}} | {{ weather.temperature }}&#8451 </b></p>
+
+                </div>
             </div>
         </div>
-</div>
         <div class="col float-right">
 
             <h2>Currency</h2>
             <div class="row">
-        <form class="form-group">
-            <div class="row float-left">
-                <div class="col">
-                    <select name="currency_from" class="form-control mb-2" style="width: max-content;">
-                        {% for currency in currencies %}
-                        <option value="{{currency}}" {{
-                                            'selected="selected"' if currency_from==currency}}>{{currency}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <h4>To</h4>
-        
-                </div>
-                <div class="col">
-                    <select name="currency_to" class="form-control  mb-2" style="width: max-content;">
-                        {% for currency in currencies %}
-                        <option value="{{currency}}" {{
-                                                                    'selected="selected"' if currency_to==currency}}>
-                            {{currency}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden /></button>
-        
-                </div>
-        
-            </div>
-        
-        
-        </form class="form-group">
+                <form class="form-group">
+                    <div class="row float-left">
+                        <div class="col">
+                            <select name="currency_from" class="form-control mb-2" style="width: max-content;">
+                                {% for currency in currencies %}
+                                <option value="{{currency}}" {{
+                                'selected="selected"' if currency_from==currency}}>{{currency}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h4>To</h4>
+
+                        </div>
+                        <div class="col">
+                            <select name="currency_to" class="form-control  mb-2" style="width: max-content;">
+                                {% for currency in currencies %}
+                                <option value="{{currency}}" {{
+                                'selected="selected"' if currency_to==currency}}>
+                                {{currency}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden/></button>
+
+                        </div>
+
+                    </div>
+
+
+                </form class="form-group">
             </div>
             <br>
             <br>
             <br><br>
-   <div class="row">
-       <div class="col">
-            1 {{ currency_from }} = {{ currency_to }} {{rate}}
+            <div class="row">
+                <div class="col">
+                    1 {{ currency_from }} = {{ currency_to }} {{rate}}
 
-       </div>
+                </div>
 
-   </div>
+            </div>
 
         </div>
     </div>
-<div class="row">
-    <div class="col-6">
-<h2>{{publication.upper()}} Headlines</h2>
-    </div>
-    <div class="col-6">
-
-<form class="form-group">
     <div class="row">
-        <div class="col">
-    <input  class="form-control" type="text" name="publication" placeholder="search" />
+        <div class="col-6">
+            <h2>{{publication.upper()}} Headlines</h2>
+        </div>
+        <div class="col-6">
+
+            <form class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <input class="form-control" type="text" name="publication" placeholder="search"/>
+
+                    </div>
+                    <div class="col float-right">
+                        <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden/></button>
+
+                    </div>
+                </div>
+            </form>
 
         </div>
-<div class="col float-right">
-    <button class="btn btn-success">Submit<input type="submit" value="Submit" hidden /></button>
 
-</div>
-    </div>
-</form>
+        <div class="row">
+            {% for article in articles %}
+            <!-- {{article.media_content}} -->
 
-    </div>
+            <div class="col-4 p-3">
+                <div class="card">
+                    <div class="card-head">
+                        <b class="card-title"><a href="{{ article.link }}">{{article.title}}</a></b><br>
+                        <i class="card-subtitle mb-2 text-muted">{{article.published}}</i>
+                    </div>
 
-<div class="row">
-{% for article in articles %}
-<!-- {{article.media_content}} -->
-
-<div class="col-4 p-3">
-    <div class="card">
-        <div class="card-head">
-            <b class="card-title"><a href="{{ article.link }}">{{article.title}}</a></b><br>
-            <i class="card-subtitle mb-2 text-muted">{{article.published}}</i>
-        </div>
-
-        <div class="card-body">
-            <p class="card-text">{{article.summary}}</p>
+                    <div class="card-body">
+                        <p class="card-text">{{article.summary}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</div>
-{% endfor %}
-</div>
-</div>
 </div>
 </body>
 </html>
